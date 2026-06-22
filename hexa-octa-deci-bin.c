@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void deci_binary(int n) {
 int binaryNum[1000];
@@ -17,18 +18,11 @@ int binaryNum[1000];
 
 int main(int argc, char *argv[])
 {
-	while ((argc > 2) && (argv[2][0] == '-'))
-	{
-		switch (argv[2][1]) {
-case 'h': printf("Hexadecimal: 0x%x\n", argv[1]); break;
-		}
-		break;
+	if (argc > 1) {
+		printf("Decimal: %d\n", atoi(&argv[1][0]));
+		printf("Hexadecimal: 0x%x\n", atoi(&argv[1][0]));
+		printf("Octal: %o\n", atoi(&argv[1][0]));
+		deci_binary(atoi(&argv[1][0]));
 	}
-		/*
-	printf("Decimal: %d\n", x);
-	printf("Octal: %o\n", x);
-	printf("Hexadecimal: 0x%x\n", x);
-	deci_binary(x);
-	*/
 	return 0;
 }
