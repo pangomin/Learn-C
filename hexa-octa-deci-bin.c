@@ -17,9 +17,13 @@ int binaryNum[1000];
 
 int main(int argc, char *argv[])
 {
-	int options;
-	while (argc > 2 && argv[1][0] == '-')
-		switch (options)
+	while ((argc > 2) && (argv[2][0] == '-'))
+	{
+		switch (argv[2][1]) {
+case 'h': printf("Hexadecimal: 0x%x\n", argv[1]); break;
+		}
+		break;
+	}
 		/*
 	printf("Decimal: %d\n", x);
 	printf("Octal: %o\n", x);
