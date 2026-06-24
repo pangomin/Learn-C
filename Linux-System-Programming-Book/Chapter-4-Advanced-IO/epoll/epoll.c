@@ -34,7 +34,7 @@ int main(void)
 			return 1;
 		}
 		if (nr_events == 0) {
-			printf("Timeout! retrying...\n");
+			printf("\nTimeout! retrying...\n");
 			continue;
 		}
 
