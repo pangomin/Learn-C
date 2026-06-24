@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/epoll.h>
 #include <errno.h>
@@ -18,37 +19,51 @@ int main(void)
 	ssize_t nr;
 	event.events = EPOLLIN;
 	event.data.fd = fd;
+
 	nr = epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &event);
 	if (nr) {
 		perror("epoll_ctl");
 		return 1;
 	}
 	int nr_events;
-	ssize_t ret;
-	char buf[100];
-	char *buf_ptr = buf;
-	ssize_t len = sizeof(buf);
 	for (;;) {
-		nr_events = epoll_wait(epfd, &event, 1, 1000);
+		nr_events = epoll_wait(epfd, &event, 1, 5000);
+
 		if (nr_events < 0) {
 			perror("epoll_wait");
 			return 1;
 		}
-		while (len != 0 && (ret = read(event.data.fd, buf_ptr, len != 0)))
-		{
+		if (nr_events == 0) {
+			printf("Timeout! retrying...\n");
+			continue;
+		}
+
+		char buf[100];
+		ssize_t ret = read(event.data.fd, buf, sizeof(buf) - 1);
+
 		if (ret == 0) {
-			break;
+			printf("\nEOF");
+			close(epfd);
+			return 0;
 		}
 		if (ret == -1) {
-			if (errno == EINTR) {
+			if (errno == EINTR)
 				continue;
-		}
 			perror("read");
-			return 1;
-			}
-			len -= ret;
-			buf_ptr += ret;
+			close(epfd);
+			return 0;
 		}
+
+		if (ret > 0 && strcasecmp(buf, "exit\n") != 0) {
+			buf[ret] = '\0';
+			printf("read: %ld %s", ret, buf);
+		}
+		else if (strcasecmp(buf, "exit\n") == 0) {
+			puts("Exiting..");
+			close(epfd);
+			return 0;
+		}
+
 	}
 	close(epfd);
 
