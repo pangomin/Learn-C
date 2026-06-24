@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include <sys/epoll.h>
 #include <errno.h>
@@ -42,7 +42,7 @@ int main(void)
 		ssize_t ret = read(event.data.fd, buf, sizeof(buf) - 1);
 
 		if (ret == 0) {
-			printf("\nEOF");
+			printf("\nEOF\n");
 			close(epfd);
 			return 0;
 		}
@@ -53,16 +53,16 @@ int main(void)
 			close(epfd);
 			return 0;
 		}
-
-		if (ret > 0 && strcasecmp(buf, "exit\n") != 0) {
+		if (ret > 0) {
 			buf[ret] = '\0';
-			printf("read: %ld %s", ret, buf);
-		}
-		else if (strcasecmp(buf, "exit\n") == 0) {
+		if (strcasecmp(buf, "exit\n") == 0) {
 			puts("Exiting..");
 			close(epfd);
 			return 0;
 		}
+			printf("read: %ld %s", ret, buf);
+		}
+
 
 	}
 	close(epfd);
