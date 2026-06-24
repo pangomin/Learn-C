@@ -60,6 +60,8 @@ int main(void)
 			close(epfd);
 			return 0;
 		}
+			printf("epoll_wait returned %d\n", nr_events);
+			printf("fd %d is ready\n", event.data.fd);
 			printf("read: %ld %s", ret, buf);
 		}
 
