@@ -13,6 +13,7 @@ int main(void) {
 	int nr_events;
 	char buf[3];
 	ssize_t ret;
+	ssize_t total_bytes = 0;
 
 	fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | O_NONBLOCK);
 
@@ -50,6 +51,7 @@ int main(void) {
 				printf("fd %d is ready\n", event.data.fd);
 				printf("read: %ld bytes: %s\n", ret, buf);
 				puts("------------------");
+				total_bytes += ret;
 			}
 			else if (ret == 0) {
 				printf("\nEOF\n");
@@ -66,6 +68,7 @@ int main(void) {
 				return 0;
 				}
 			}
+			printf("Total bytes read: %ld\n", total_bytes);
 
 	}
 	close (epfd);
