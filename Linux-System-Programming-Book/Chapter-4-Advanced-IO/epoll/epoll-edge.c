@@ -4,6 +4,7 @@
 #include <sys/epoll.h>
 #include <errno.h>
 
+#define BUF_SIZE 3
 
 int main(void) {
 	struct epoll_event event;
@@ -11,7 +12,7 @@ int main(void) {
 	int fd = STDIN_FILENO;
 	ssize_t nr;
 	int nr_events;
-	char buf[3];
+	char buf[BUF_SIZE];
 	ssize_t ret;
 	ssize_t total_bytes = 0;
 
