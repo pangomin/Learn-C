@@ -1,7 +1,16 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-//	va_start(ap, paramN); // va_arg and va_end will use ap
+/*
+ * Computes the sum of a variable number of integer arguments.
+ *
+ * Parameters:
+ *   count	Number of integer arguments that follow.
+ *   ...    The integer values to be summed.
+ *
+ * Returns:
+ *   The sum of all supplied integers.
+ */
 
 int sum(int count, ...) {
 	int total = 0;
