@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 /*
- * Computes the sum of a variable number of integer arguments and
- * finds the greatest number.
+ * Computes the sum and maximum of a variable number of integer arguments
+ * and prints the result.
  *
  * Parameters:
  *   count	Number of integer arguments that follow.
