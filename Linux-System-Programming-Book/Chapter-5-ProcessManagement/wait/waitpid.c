@@ -18,13 +18,10 @@ int main(void)
 		printf("parentpid=%d\n", getppid());
 	}
 	if(pid > 0) {
-		waitpd = waitpid(pid, &status, WNOHANG);
+		waitpd = waitpid(pid, &status, 0);
 		if(waitpd == -1) {
 			perror("waitpid");
 			return 1;
-		}
-		if(waitpd == 0) {
-			puts("Child is still running");
 		} else {
 			printf("waitpid=%d\n", waitpd);
 			if(WIFEXITED(status)) {
