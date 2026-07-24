@@ -39,7 +39,7 @@ default:
 			}
 		}
 		else if(*c != '%' && *c != '\0') {
-			write(1, c, 1);
+			write(STDOUT_FILENO, c, 1);
 			c++;
 			continue;
 		}
