@@ -28,10 +28,8 @@ int main(void) {
 	else {
 		printf("session id=%d\n", sid);
 	}
-	while(1);
-	/*
-	 * I have to figure out why looping after printf while getsid
-	 * is sent to printf directly causes printf to not
-	 * print the result in terminal
-	 * */
+	while(1) {
+		printf("I'm alive %d\n", getpid());
+		sleep(3);
+	}
 }
