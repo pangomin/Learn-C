@@ -1,0 +1,1 @@
+> I'm not gonna dive deep into parallel programming for now, because it is a dense, deep, and complex topic. Thus, it is not worth it to learn more at such a superficial level. Reading the book, you'll immediately notice this.
