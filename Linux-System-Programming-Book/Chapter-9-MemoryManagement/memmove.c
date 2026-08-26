@@ -19,7 +19,12 @@ int main(void) {
 	}
 
 	memmove(buf2, buf, nr);
-	printf("%s", buf2);
+	printf("%s\n", buf2);
+
+	char *search;
+	search = memchr(buf2, 'F', BUFSIZ);
+	printf("\n\n%p\n", search);
+	printf("\n\n%c\n", *search);
 
 	if (fclose(stream)) {
 		perror("fclose");
