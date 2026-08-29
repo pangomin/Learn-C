@@ -1,0 +1,14 @@
+#include <signal.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main(void) {
+	for (int sig = 1; sig < NSIG; sig++) {
+		char *str = strsignal(sig);
+        if (!str)
+            return -1;
+		printf("%d -> %s\n", sig, str);
+	}
+	return 0;
+}
