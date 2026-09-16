@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 
 char *readline(void) {
 	fputs("$ ", stdout);
@@ -39,18 +40,26 @@ error:
 	return NULL;
 }
 
-void executer(char **args) {
+int executer(char **args) {
+	int status;
 	pid_t pid = fork();
 	if (pid == 0) {
 		execvp(args[0], args);
 	}
+	do {
+		waitpid(0, &status, WUNTRACED);
+	} while(!WIFEXITED(status) && !WIFSIGNALED(status));
+	return 0;
 }
 
 void main(void) {
-	char *line = readline();
-	char **args = parser(line);
-	if(args == NULL) {
-		return;
-	}
-	executer(args);
+	int status;
+	do {
+		char *line = readline();
+		char **args = parser(line);
+			if(args == NULL) {
+				return;
+		}
+		status = executer(args);
+	} while(status == 0);
 }
