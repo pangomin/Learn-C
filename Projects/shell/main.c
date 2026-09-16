@@ -23,7 +23,7 @@ char **parser(char *input) {
 	if (input == NULL) {
 		goto error;
 	}
-	char **args = malloc(strlen(input) + 1);
+	char **args = malloc((strlen(input) + 1) * sizeof(char*));
 	int i = 0;
 
 	args[i] = strtok(input, " \n");
