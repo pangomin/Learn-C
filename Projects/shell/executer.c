@@ -38,14 +38,11 @@ int executer(char **args) {
 		}
 	}
 
-	do {
 		if (waitpid(pid, &status, WUNTRACED) == -1) {
-			break;
+			exit(EXIT_FAILURE);
 		}
 		if (WIFEXITED(status)) {
 			return WEXITSTATUS(status);
 		}
-	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-
-	return 0;
+		return 0;
 }
