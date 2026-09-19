@@ -32,8 +32,12 @@ int executer(char **args) {
 	}
 
 	do {
-		if (waitpid(pid, &status, WUNTRACED) == -1)
+		if (waitpid(pid, &status, WUNTRACED) == -1) {
 			break;
+		}
+		if (WIFEXITED(status)) {
+			return WEXITSTATUS(status);
+		}
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
 	return 0;
