@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <signal.h>
 #include "headers/signalhandler.h"
 
 int executer(char **args) {
@@ -25,9 +26,15 @@ int executer(char **args) {
 		return -1;
 	}
 	if (pid == 0) {
-		if (execvp(args[0], args) == -1) {
-			perror("execvp");
-			exit(EXIT_FAILURE);
+		if (sigcleaner(SIGINT) == 0) {
+			if (execvp(args[0], args) == -1) {
+				perror("execvp");
+				exit(EXIT_FAILURE);
+			}
+		}
+		else {
+			puts("sigcleaner failed!\n");
+			return -1;
 		}
 	}
 
