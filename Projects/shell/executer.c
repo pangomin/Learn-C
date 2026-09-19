@@ -34,7 +34,7 @@ int executer(char **args) {
 		}
 		else {
 			puts("sigcleaner failed!\n");
-			return -1;
+			exit(EXIT_FAILURE);
 		}
 	}
 
