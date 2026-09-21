@@ -5,11 +5,21 @@
 #include <stdio.h>
 #include <signal.h>
 #include "headers/signalhandler.h"
+#include "headers/cdbuiltin.h"
+
+/*
+ * Execute commands.
+ *
+ * Builtins, cd and exit, are handled directly. Everything else is forked
+ * and runs with execvp. Blocks until the child exits, is signaled, or stops.
+ *
+ * Returns the child's exit status, the terminating signal number, or
+ * the stop signal number; -1 on failure of fork, etc.
+ */
 
 int executer(char **args) {
 	if (strcmp(args[0], "cd") == 0) {
-		if (chdir(args[1]) == -1) {
-			perror("cd");
+		if (cd(args[1]) == -1) {
 			return -1;
 		}
 		return 0;
@@ -26,7 +36,8 @@ int executer(char **args) {
 		return -1;
 	}
 	if (pid == 0) {
-		if (sigcleaner(SIGINT) == 0) {
+		/* Reset SIGINT and SIGTSTP in the child, so it can get intrrupted */
+		if ((sigcleaner(SIGINT) | sigcleaner(SIGTSTP)) == 0) {
 			if (execvp(args[0], args) == -1) {
 				perror("execvp");
 				exit(EXIT_FAILURE);
@@ -37,12 +48,18 @@ int executer(char **args) {
 			exit(EXIT_FAILURE);
 		}
 	}
-
+		/* Wait for child and check its status */
 		if (waitpid(pid, &status, WUNTRACED) == -1) {
 			exit(EXIT_FAILURE);
 		}
 		if (WIFEXITED(status)) {
 			return WEXITSTATUS(status);
 		}
-		return 0;
+		if (WIFSIGNALED(status)) {
+			return WTERMSIG(status);
+		}
+		if (WIFSTOPPED(status)) {
+			return WSTOPSIG(status);
+		}
+		return -1;
 }
