@@ -1,6 +1,6 @@
 #ifndef EXECUTER_H
 #define EXECUTER_H
 
-int executer(char **args);
+int executer(struct parsed_command *cmd);
 
 #endif

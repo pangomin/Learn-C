@@ -5,21 +5,43 @@
 #include "headers/signalhandler.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 int main(void) {
-	sigblocker(0);
-	int status;
+	sigblocker(SIGINT);
+	sigblocker(SIGTSTP);
+	char *line;
+	enum readline_status rlstatus;
+	struct parsed_command *cmd;
+
+	/* read input, parse and execute it */
 	do {
-		char *line = readline();
-		char **args = parser(line);
-			if(args == NULL) {
-				;
+		line = readline(&rlstatus);
+		if (line == NULL) {
+			if (rlstatus == READLINE_EOF) {
+				free(line);
+				exit(EXIT_SUCCESS);
+			}
+			if (rlstatus == READLINE_ERROR) {
+				free(line);
+				continue;
+			}
 		} else {
-			status = executer(args);
-			if (status == -1) {
-				;
+			cmd = parser(line);
+			if (cmd == NULL) {
+				free(line);
+				continue;
+			}
+			if (executer(cmd) == -1) {
+				free(cmd);
+				free(line);
+				continue;
 			}
 		}
+		free(cmd);
+		free(line);
 	} while(1);
 
 	exit(EXIT_FAILURE);
