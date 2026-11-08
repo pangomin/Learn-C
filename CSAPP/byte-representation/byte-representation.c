@@ -23,12 +23,15 @@ void show_pointer(void *x) {
 	show_bytes((void*) &x, sizeof(void *));
 }
 
-int main(void) {
-	byte_pointer byte = "96";
-	byte_pointer *p = &byte;
+void test_show_bytes(int val) {
+	int ival = val;
+	float fval = (float) ival;
+	int *pval = &ival;
+	show_int(ival);
+	show_float(fval);
+	show_pointer(pval);
+}
 
-	show_bytes(byte, sizeof(byte_pointer));
-	show_int(100);
-	show_float(100.0);
-	show_pointer(p);
+int main(void) {
+	test_show_bytes(100);
 }
