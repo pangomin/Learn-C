@@ -1,4 +1,1 @@
-*.s linguist-language=Assembly
-*.s linguist-detectable=true
-*.s linguist-generated=false
-*.s linguist-vendored=false
+*.s linguist-language=Unix-Assembly
