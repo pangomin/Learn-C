@@ -1,6 +1,23 @@
-*.o
-*.ko
-*.obj
-*.elf
+# Ignore everything
+*
 
-*.out
+# Allow directories
+!*/
+
+# Allow source code, headers, assembly and scripts
+!*.c
+!*.o
+!*.h
+!*.s
+!*.S
+!*.asm
+!*.py
+!*.sh
+!Makefile
+!makefile
+
+# Allow documentation and git config files
+!*.md
+!*.txt
+!.gitignore
+!.gitattributes
