@@ -4,6 +4,14 @@
 # Allow directories
 !*/
 
+# Ignore dirs of old books
+.git/
+Linux-System-Programming-Book/
+My-Codes/
+Virtual-Memory/
+Assembly/
+Network/
+
 # Allow source code, headers, assembly and scripts
 !*.c
 !*.o
